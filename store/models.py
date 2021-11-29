@@ -1,4 +1,6 @@
+from django import db
 from django.db import models
+from django.db.models import fields
 from django.db.models.fields import CharField
 
 # Create your models here.
@@ -35,8 +37,14 @@ class Customer(models.Model):
     last_name = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
     phone = CharField(max_length=255)
-    birth_data = models.DateField(null=True)
+    birth_date = models.DateField(null=True)
     membership = models.CharField(max_length=1, choices=MEMBERSHIP_CHOICES, default=MEMBERSHIP_BRONZE)
+
+    class Meta:
+        db_table = 'store_customer'
+        indexes = [
+            models.Index(fields=['last_name', 'first_name'])
+        ]
 
 
 class Order(models.Model):
