@@ -3,8 +3,8 @@
         <h1>Hello World!</h1>
         <hr>
         <ul>
-            {% for product in products %}
-            <li>{{ product.title }}</li>
+            {% for order in orders %}
+            <li>{{ order.id }} - {{ order.customer.first_name }}</li>
             {% endfor %}
         </ul>
     </body>
