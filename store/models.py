@@ -1,6 +1,6 @@
 from django import db
 from django.db import models
-from django.db.models import fields
+from django.db.models import fields, aggregates
 from django.db.models.fields import CharField
 
 # Create your models here.
