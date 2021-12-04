@@ -38,9 +38,12 @@ class CollectionAdmin(admin.ModelAdmin):
     #     )
 
 
+
+
 @admin.register(models.Product) # decorator to register a new model to the admin panel
 class ProductAdmin(admin.ModelAdmin):
     autocomplete_fields = ['collection']
+    search_fields = ['product', 'collection']
     prepopulated_fields = {
         'slug': ['title']
     }
@@ -50,6 +53,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_per_page = 20 # items displayed per page
     list_select_related = ['collection'] # preload the collection field, helps to reduce the number pd quieried
     list_filter = ['collection', 'last_update', InventoryFilter]
+
 
     # function to make related field 'collection_title' accessible
     def collection_title(self, product): 
@@ -80,6 +84,13 @@ class CustomerAdmin(admin.ModelAdmin):
     list_per_page = 10
     search_fields = ['first_name__istartswith', 'last_name__istartswith']
 
+class OrderItemInline(admin.TabularInline):
+    model = models.OrderItem    
+    autocomplete_fields = ['product']
+    extra = 0
+    min_num = 1
+    max_num = 10
+
 @admin.register(models.Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = ['placed_at', 'payment_status', 'customer']
@@ -87,6 +98,7 @@ class OrderAdmin(admin.ModelAdmin):
     ordering = ['-placed_at']
     list_per_page = 20
     list_select_related = ['customer']
+    inlines = [OrderItemInline]
 
     def customer(self, Customer):
         return Customer.first_name
